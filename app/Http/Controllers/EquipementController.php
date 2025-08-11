@@ -6,6 +6,7 @@ use App\Models\Equipement;
 use App\Models\Categorie;
 use App\Models\Emplacement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EquipementController extends Controller
 {
@@ -31,7 +32,14 @@ class EquipementController extends Controller
             'emplacement_id' => 'nullable|exists:emplacements,id',
             'etat' => 'required|string|max:50',
             'date_acquisition' => 'nullable|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        // Gestion upload image
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('equipements', 'public');
+            $validated['image'] = $path;
+        }
 
         Equipement::create($validated);
 
@@ -59,7 +67,17 @@ class EquipementController extends Controller
             'emplacement_id' => 'nullable|exists:emplacements,id',
             'etat' => 'required|string|max:50',
             'date_acquisition' => 'nullable|date',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        // Si une nouvelle image est uploadée, supprimer l'ancienne
+        if ($request->hasFile('image')) {
+            if ($equipement->image && Storage::disk('public')->exists($equipement->image)) {
+                Storage::disk('public')->delete($equipement->image);
+            }
+            $path = $request->file('image')->store('equipements', 'public');
+            $validated['image'] = $path;
+        }
 
         $equipement->update($validated);
 
@@ -68,18 +86,20 @@ class EquipementController extends Controller
 
     public function destroy(Equipement $equipement)
     {
+        // Supprimer l'image associée si existe
+        if ($equipement->image && Storage::disk('public')->exists($equipement->image)) {
+            Storage::disk('public')->delete($equipement->image);
+        }
+
         $equipement->delete();
 
         return redirect()->route('equipements.index')->with('success', 'Équipement supprimé avec succès.');
     }
+
     public function equipementsEnPanne()
-{
-    // Par exemple, état = 'en panne' ou autre valeur que tu utilises
-    $equipementsPanne = Equipement::where('etat', 'en panne')->get();
+    {
+        $equipementsPanne = Equipement::where('etat', 'en panne')->get();
 
-    return view('equipements.panne', compact('equipementsPanne'));
-}
-
-
-
+        return view('equipements.panne', ['equipementsEnPanne' => $equipementsPanne]);
+    }
 }

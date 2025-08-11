@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Modifier l'équipement : {{ $equipement->nom }}</h1>
 
-    <form action="{{ route('equipements.update', $equipement) }}" method="POST">
+    <form action="{{ route('equipements.update', $equipement) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -69,6 +69,19 @@
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image de l'équipement</label>
+            @if($equipement->image)
+                <div class="mb-2">
+                    <img src="{{ asset('storage/' . $equipement->image) }}" alt="Image équipement" style="max-width: 150px; border-radius: 5px;">
+                </div>
+            @endif
+            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+            @error('image')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
 
         <button class="btn btn-primary" type="submit">Mettre à jour</button>
         <a href="{{ route('equipements.index') }}" class="btn btn-secondary">Annuler</a>

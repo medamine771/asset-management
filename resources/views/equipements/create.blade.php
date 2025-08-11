@@ -4,7 +4,7 @@
 <div class="container">
     <h1>Ajouter un équipement</h1>
 
-    <form action="{{ route('equipements.store') }}" method="POST">
+    <form action="{{ route('equipements.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="mb-3">
@@ -68,7 +68,13 @@
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-
+        <div class="mb-3">
+            <label for="image" class="form-label">Image de l'équipement</label>
+            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+            @error('image')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
         <button class="btn btn-success" type="submit">Ajouter</button>
         <a href="{{ route('equipements.index') }}" class="btn btn-secondary">Annuler</a>
     </form>

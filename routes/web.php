@@ -7,7 +7,8 @@ use App\Http\Controllers\EmplacementController;
 use App\Http\Controllers\InterventionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\MailController;
+use App\Http\Controllers\TechnicienController;
+
 // Route d'accueil
 // Route::get('/', function () {
 //     return view('dashboard');
@@ -69,6 +70,17 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 // Enregistrement
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/equipements/panne', [EquipementController::class, 'equipementsEnPanne'])->name('equipements.panne')->middleware('auth');
+
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/techniciens', [TechnicienController::class, 'index'])->name('techniciens.index');
+    Route::get('/techniciens/{id}/edit', [TechnicienController::class, 'edit'])->name('techniciens.edit');
+    Route::put('/techniciens/{id}', [TechnicienController::class, 'update'])->name('techniciens.update');
+    Route::get('/techniciens/{id}', [TechnicienController::class, 'show'])->name('techniciens.show');
+
+    Route::delete('/techniciens/{id}', [TechnicienController::class, 'destroy'])->name('techniciens.destroy');
+});
 
 
 

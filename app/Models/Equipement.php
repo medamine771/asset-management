@@ -6,8 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Equipement extends Model
 {
-    protected $fillable = ['nom', 'description', 'categorie_id', 'emplacement_id', 'etat', 'date_acquisition'];
-    protected $casts = [
+    protected $fillable = [
+        'nom',
+        'description',
+        'categorie_id',
+        'emplacement_id',
+        'etat',
+        'date_acquisition',
+        'image',
+    ];
+        protected $casts = [
         'date_acquisition' => 'datetime',
     ];
     

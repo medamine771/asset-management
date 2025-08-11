@@ -15,8 +15,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'image',  // nouvelle propriété
     ];
+    
 
     protected $hidden = [
         'password',

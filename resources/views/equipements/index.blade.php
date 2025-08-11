@@ -33,6 +33,7 @@
         <table class="table table-hover align-middle" id="equipementsTable" style="border-collapse: separate; border-spacing: 0 8px;">
             <thead class="table-ocp text-white" style="background-color: #004d40;">
                 <tr>
+                    <th>Image</th>
                     <th>Nom</th>
                     <th>Catégorie</th>
                     <th>Emplacement</th>
@@ -44,6 +45,13 @@
             <tbody>
                 @forelse($equipements as $equipement)
                 <tr class="shadow-sm bg-white rounded">
+                    <td style="width: 80px;">
+                        @if($equipement->image)
+                            <img src="{{ asset('storage/' . $equipement->image) }}" alt="Image {{ $equipement->nom }}" style="max-width: 70px; max-height: 50px; object-fit: cover; border-radius: 4px;">
+                        @else
+                            <img src="{{ asset('images/default-equipement.png') }}" alt="Image par défaut" style="max-width: 70px; max-height: 50px; object-fit: cover; border-radius: 4px;">
+                        @endif
+                    </td>
                     <td>{{ $equipement->nom }}</td>
                     <td>{{ $equipement->categorie->nom ?? '-' }}</td>
                     <td>{{ $equipement->emplacement->nom ?? '-' }}</td>
@@ -67,7 +75,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center fst-italic text-muted">Aucun équipement trouvé.</td>
+                    <td colspan="7" class="text-center fst-italic text-muted">Aucun équipement trouvé.</td>
                 </tr>
                 @endforelse
             </tbody>

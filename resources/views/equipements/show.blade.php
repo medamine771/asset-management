@@ -4,6 +4,12 @@
 <div class="container">
     <h1>Détail de l'équipement : {{ $equipement->nom }}</h1>
 
+    @if($equipement->image)
+        <div class="mb-4">
+            <img src="{{ asset('storage/' . $equipement->image) }}" alt="Image équipement" style="max-width: 300px; border-radius: 5px;">
+        </div>
+    @endif
+
     <ul class="list-group">
         <li class="list-group-item"><strong>Nom:</strong> {{ $equipement->nom }}</li>
         <li class="list-group-item"><strong>Catégorie:</strong> {{ $equipement->categorie->nom ?? '-' }}</li>
