@@ -21,14 +21,7 @@ Route::resource('categories', CategorieController::class);
 Route::resource('emplacements', EmplacementController::class);
 Route::resource('interventions', InterventionController::class);
 
-// Route::middleware(['auth', 'admin'])->group(function () {
-//    // Routes pour les ressources
 
-// });
-
-// Route::middleware(['auth', 'technicien'])->group(function () {
-//     Route::get('/equipements-en-panne', [EquipementController::class, 'equipementsEnPanne'])->name('equipements.panne');
-// });
 
 // Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/', function () {
@@ -74,13 +67,24 @@ Route::get('/equipements/panne', [EquipementController::class, 'equipementsEnPan
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
+    // Liste
     Route::get('/techniciens', [TechnicienController::class, 'index'])->name('techniciens.index');
-    Route::get('/techniciens/{id}/edit', [TechnicienController::class, 'edit'])->name('techniciens.edit');
-    Route::put('/techniciens/{id}', [TechnicienController::class, 'update'])->name('techniciens.update');
+
+    // Création
+    Route::get('/techniciens/create', [TechnicienController::class, 'create'])->name('techniciens.create');
+    Route::post('/techniciens', [TechnicienController::class, 'store'])->name('techniciens.store');
+
+    // Affichage d’un seul technicien
     Route::get('/techniciens/{id}', [TechnicienController::class, 'show'])->name('techniciens.show');
 
+    // Édition
+    Route::get('/techniciens/{id}/edit', [TechnicienController::class, 'edit'])->name('techniciens.edit');
+    Route::put('/techniciens/{id}', [TechnicienController::class, 'update'])->name('techniciens.update');
+
+    // Suppression
     Route::delete('/techniciens/{id}', [TechnicienController::class, 'destroy'])->name('techniciens.destroy');
 });
+
 
 
 

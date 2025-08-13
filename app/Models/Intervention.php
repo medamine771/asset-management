@@ -19,4 +19,11 @@ class Intervention extends Model
     {
         return $this->belongsTo(User::class, 'technicien_id');
     }
+    public function markAsComplete()
+    {
+        $this->update([
+            'statut' => 'terminee',
+            'date_intervention' => $this->date_intervention ?? now()
+        ]);
+    }
 }

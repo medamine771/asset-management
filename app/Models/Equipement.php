@@ -34,5 +34,10 @@ class Equipement extends Model
         return $this->hasMany(Intervention::class);
     }
 
+    public function technicien()
+    {
+        return $this->belongsTo(User::class, 'technicien_id');
+    }
+
     
 }

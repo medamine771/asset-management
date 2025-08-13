@@ -16,7 +16,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'image',  // nouvelle propriété
+        'image',
+        'telephone'  
     ];
     
 
@@ -27,5 +28,9 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    public static $rules = [
+        'telephone' => 'nullable|string|max:20|regex:/^[0-9\+\-\s]+$/'
     ];
 }
