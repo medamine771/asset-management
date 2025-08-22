@@ -8,83 +8,72 @@ use App\Http\Controllers\InterventionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TechnicienController;
+use App\Http\Controllers\StatistiquesController;
 
-// Route d'accueil
-// Route::get('/', function () {
-//     return view('dashboard');
-// });
-
-
-
-Route::resource('equipements', EquipementController::class);
-Route::resource('categories', CategorieController::class);
-Route::resource('emplacements', EmplacementController::class);
-Route::resource('interventions', InterventionController::class);
-
-
-
-// Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+// Routes publiques
 Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware('auth')
-    ->name('dashboard');
-
-// Route::middleware(['auth', 'admin'])->group(function () {
-//     Route::get('/admin/dashboard', function () {
-//         return view('admin.dashboard');
-//     })->name('admin.dashboard');
-// });
-use App\Http\Controllers\AdminDashboardController;
-
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])
-        ->name('admin.dashboard');
-});
-
-
-
-Route::middleware(['auth', 'technicien'])->group(function () {
-    Route::get('/technicien/dashboard', [DashboardController::class, 'index'])
-        ->name('tech.dashboard');
-});
-
-
-// Formulaire d'inscription
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
-
-// Enregistrement
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::get('/equipements/panne', [EquipementController::class, 'equipementsEnPanne'])->name('equipements.panne')->middleware('auth');
 
-
-
-Route::middleware(['auth', 'admin'])->group(function () {
-    // Liste
-    Route::get('/techniciens', [TechnicienController::class, 'index'])->name('techniciens.index');
-
-    // Création
-    Route::get('/techniciens/create', [TechnicienController::class, 'create'])->name('techniciens.create');
-    Route::post('/techniciens', [TechnicienController::class, 'store'])->name('techniciens.store');
-
-    // Affichage d’un seul technicien
-    Route::get('/techniciens/{id}', [TechnicienController::class, 'show'])->name('techniciens.show');
-
-    // Édition
-    Route::get('/techniciens/{id}/edit', [TechnicienController::class, 'edit'])->name('techniciens.edit');
-    Route::put('/techniciens/{id}', [TechnicienController::class, 'update'])->name('techniciens.update');
-
-    // Suppression
-    Route::delete('/techniciens/{id}', [TechnicienController::class, 'destroy'])->name('techniciens.destroy');
+// Routes protégées par authentification
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Routes pour les équipements
+    Route::resource('equipements', EquipementController::class);
+    Route::get('/equipements/panne', [EquipementController::class, 'equipementsEnPanne'])->name('equipements.panne');
+    Route::patch('/equipements/{equipement}/updateEtat', [EquipementController::class, 'updateEtat'])
+        ->name('equipements.updateEtat');
+    Route::get('/equipements/{equipement}/interventions', [EquipementController::class, 'historique'])
+        ->name('equipements.interventions');
+    
+    // Autres ressources
+    Route::resource('categories', CategorieController::class);
+    Route::resource('emplacements', EmplacementController::class);
+    Route::resource('interventions', InterventionController::class);
+    
+    // Mise à jour statut intervention
+    Route::patch('/interventions/{intervention}/status', [InterventionController::class, 'updateStatus'])
+        ->name('interventions.updateStatus');
 });
 
+// Routes admin
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::resource('techniciens', TechnicienController::class);
+    Route::get('/statistiques', [StatistiquesController::class, 'index'])->name('statistiques.index');
+});
 
+// Routes technicien
+Route::middleware(['auth', 'technicien'])->group(function () {
+    Route::get('/technicien/dashboard', [DashboardController::class, 'index'])->name('tech.dashboard');
+});
 
+use App\Http\Controllers\ActifNumeriqueController;
 
+Route::resource('actifs-numeriques', ActifNumeriqueController::class);
+
+use App\Http\Controllers\MessageController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/messages/inbox', [MessageController::class, 'inbox'])->name('messages.inbox');
+    Route::get('/messages/sent', [MessageController::class, 'sent'])->name('messages.sent');
+    Route::get('/messages/create', [MessageController::class, 'create'])->name('messages.create');
+    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+    Route::get('/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+    // Répondre à un message (formulaire)
+    Route::get('messages/{message}/reply', [MessageController::class, 'reply'])->name('messages.reply');
+
+// Envoyer la réponse
+    Route::post('messages/{message}/reply', [MessageController::class, 'sendReply'])->name('messages.sendReply');
+});
+
+Route::get('/technician/messages', [MessageController::class, 'technicianInbox'])
+     ->middleware('auth')
+     ->name('technician.messages.inbox');

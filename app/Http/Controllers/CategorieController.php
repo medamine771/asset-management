@@ -28,30 +28,49 @@ class CategorieController extends Controller
             'nom' => $request->nom,
         ]);
 
-        return redirect()->route('categories.index')->with('success', 'Catégorie ajoutée avec succès.');
+        return redirect()->route('categories.index')
+            ->with('swal', [
+                'icon' => 'success',
+                'title' => 'Ajouté!',
+                'text' => 'La catégorie a été ajoutée avec succès.'
+            ]);
     }
 
-    public function edit(Categorie $categorie)
+    public function edit($id)
     {
+        $categorie = Categorie::findOrFail($id);
         return view('categories.edit', compact('categorie'));
     }
 
-    public function update(Request $request, Categorie $categorie)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nom' => 'required|string|max:255',
         ]);
 
+        $categorie = Categorie::findOrFail($id);
         $categorie->update([
-            'nom' => $request->nom,
+            'nom' => $request->nom
         ]);
 
-        return redirect()->route('categories.index')->with('success', 'Catégorie mise à jour avec succès.');
+        return redirect()->route('categories.index')
+            ->with('swal', [
+                'icon' => 'success',
+                'title' => 'Modifié!',
+                'text' => 'La catégorie a été mise à jour avec succès.'
+            ]);
     }
 
-    public function destroy(Categorie $categorie)
+    public function destroy($id)
     {
+        $categorie = Categorie::findOrFail($id);
         $categorie->delete();
-        return redirect()->route('categories.index')->with('success', 'Catégorie supprimée avec succès.');
+
+        return redirect()->route('categories.index')
+            ->with('swal', [
+                'icon' => 'success',
+                'title' => 'Supprimé!',
+                'text' => 'La catégorie a été supprimée avec succès.'
+            ]);
     }
 }

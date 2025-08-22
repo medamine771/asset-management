@@ -5,7 +5,8 @@
     <h1 class="mb-4" style="color: #004d40; font-weight: 700; letter-spacing: 1.5px;">
         Liste des équipements
     </h1>
-
+   
+    
     <a href="{{ route('equipements.create') }}" class="btn btn-ocp mb-4">
         <i class="bi bi-plus-circle"></i> Ajouter un équipement
     </a>
@@ -39,6 +40,7 @@
                     <th>Emplacement</th>
                     <th>État</th>
                     <th>Date d'acquisition</th>
+                    <th>Historique</th>
                     <th style="width: 160px;">Actions</th>
                 </tr>
             </thead>
@@ -57,6 +59,10 @@
                     <td>{{ $equipement->emplacement->nom ?? '-' }}</td>
                     <td>{{ ucfirst($equipement->etat) }}</td>
                     <td>{{ $equipement->date_acquisition?->format('d/m/Y') ?? '-' }}</td>
+                    <td> <a href="{{ route('equipements.interventions', $equipement) }}" class="btn btn-info btn-sm">
+                        Voir l’historique
+                    </a></td>
+                    
                     <td>
                         <a href="{{ route('equipements.show', $equipement) }}" class="btn btn-info btn-sm me-1" title="Voir">
                             <i class="bi bi-eye"></i>
@@ -72,6 +78,7 @@
                             </button>
                         </form>
                     </td>
+                    
                 </tr>
                 @empty
                 <tr>
@@ -81,6 +88,13 @@
             </tbody>
         </table>
     </div>
+</div>
+<div class="d-flex justify-content-center mt-4">
+    <a href="{{ route('dashboard') }}" 
+       class="btn btn-outline-dark ripple" 
+       title="Retour au tableau de bord">
+        <i class="bi bi-arrow-left fs-5"></i>
+    </a>
 </div>
 
 <!-- Styles personnalisés -->

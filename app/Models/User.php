@@ -33,4 +33,14 @@ class User extends Authenticatable
     public static $rules = [
         'telephone' => 'nullable|string|max:20|regex:/^[0-9\+\-\s]+$/'
     ];
+      // Relation avec les interventions
+      public function interventions()
+      {
+          return $this->hasMany(\App\Models\Intervention::class, 'technicien_id');
+      }
+      public function actifsNumeriques()
+      {
+          return $this->hasMany(ActifNumerique::class, 'responsable_id');
+      }
+      
 }

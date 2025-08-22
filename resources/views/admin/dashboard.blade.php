@@ -3,131 +3,220 @@
 @section('title', 'Tableau de bord')
 
 @section('content')
-<div class="container mt-5">
+<div class="container mt-4">
 
     {{-- Titre principal --}}
-    <h1 class="mb-4 text-success fw-bold" style="letter-spacing: 1.5px;">
-        Tableau de bord
-    </h1>
+    <h1 class="mb-4 text-success fw-bold" style="letter-spacing: 1.5px;">Tableau de bord</h1>
 
-    {{-- Section cartes statistiques --}}
-    <div class="row g-4">
+    {{-- ====== Row 1 : Statistiques principales ====== --}}
+    <div class="row g-3">
 
-        {{-- Carte : Nombre d'équipements --}}
-        <div class="col-md-4">
-            <a href="{{ route('equipements.index') }}" class="text-decoration-none" aria-label="Voir la liste des équipements">
-                <div 
-                    class="card shadow-sm border-0 rounded-4 text-white stat-card"
-                    style="background-color: #004d40;"
-                    title="Nombre total d'équipements enregistrés"
-                >
-                    <div class="card-body text-center">
-                        <i class="bi bi-hdd-network display-3 mb-3"></i>
-                        <h5 class="card-title">Nombre d'équipements</h5>
-                        <p class="display-4 mb-0">{{ $nombreEquipements }}</p>
+        <div class="col-6 col-md-3">
+            <a href="{{ route('equipements.index') }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 rounded-3 text-white stat-card" style="background-color: #004d40;">
+                    <div class="card-body text-center p-2">
+                        <i class="bi bi-hdd-network display-4 mb-1"></i>
+                        <h6 class="card-title mb-1">Équipements</h6>
+                        <p class="h4 mb-0">{{ $nombreEquipements }}</p>
                     </div>
                 </div>
             </a>
         </div>
 
-        {{-- Carte : Nombre d'interventions --}}
-        <div class="col-md-4">
-            <a href="{{ route('interventions.index') }}" class="text-decoration-none" aria-label="Voir la liste des interventions">
-                <div 
-                    class="card shadow-sm border-0 rounded-4 text-white stat-card"
-                    style="background-color: #6BA539;"
-                    title="Nombre total d'interventions réalisées"
-                >
-                    <div class="card-body text-center">
-                        <i class="bi bi-tools display-3 mb-3"></i>
-                        <h5 class="card-title">Nombre d'interventions</h5>
-                        <p class="display-4 mb-0">{{ $nombreIntervention }}</p>
+        <div class="col-6 col-md-3">
+            <a href="{{ route('interventions.index') }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 rounded-3 text-white stat-card" style="background-color: #6BA539;">
+                    <div class="card-body text-center p-2">
+                        <i class="bi bi-tools display-4 mb-1"></i>
+                        <h6 class="card-title mb-1">Interventions</h6>
+                        <p class="h4 mb-0">{{ $nombreIntervention }}</p>
                     </div>
                 </div>
             </a>
         </div>
 
-        {{-- Carte : Nombre de techniciens --}}
-        <div class="col-md-4">
-            <a href="{{ route('techniciens.index') }}" class="text-decoration-none" aria-label="Voir la liste des techniciens">
-                <div 
-                    class="card shadow-sm border-0 rounded-4 text-dark stat-card"
-                    style="background-color: #ffca28;"
-                    title="Voir la liste des techniciens"
-                >
-                    <div class="card-body text-center">
-                        <i class="bi bi-person-badge display-3 mb-3"></i>
-                        <h5 class="card-title">Nombre de techniciens</h5>
-                        <p class="display-4 mb-0">{{ $nombreTechniciens }}</p>
+        <div class="col-6 col-md-3">
+            <a href="{{ route('techniciens.index') }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 rounded-3 text-dark stat-card" style="background-color: #ffca28;">
+                    <div class="card-body text-center p-2">
+                        <i class="bi bi-person-badge display-4 mb-1"></i>
+                        <h6 class="card-title mb-1">Techniciens</h6>
+                        <p class="h4 mb-0">{{ $nombreTechniciens }}</p>
                     </div>
                 </div>
             </a>
         </div>
-        
+
+        <div class="col-6 col-md-3">
+            <a href="{{ route('equipements.index') }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 rounded-3 text-white stat-card" style="background-color: #d32f2f;">
+                    <div class="card-body text-center p-2">
+                        <i class="bi bi-exclamation-triangle display-4 mb-1"></i>
+                        <h6 class="card-title mb-1">En panne</h6>
+                        <p class="h4 mb-0">{{ $nombreEquipementsEnPanne }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
     </div>
-    {{-- Fin cartes --}}
 
-    {{-- Section graphique (exemple interventions mensuelles) --}}
-    <div class="mt-5">
-        <h2 class="text-success fw-bold mb-3">Statistiques mensuelles des interventions</h2>
-        <canvas id="interventionsChart" height="130" aria-label="Graphique des interventions mensuelles" role="img"></canvas>
+    {{-- ====== Row 2 : Actifs numériques ====== --}}
+    <div class="row g-3 mt-3">
+
+        <div class="col-6 col-md-4">
+            <a href="{{ route('actifs-numeriques.index') }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 rounded-3 text-white stat-card" style="background-color: #6c757d;">
+                    <div class="card-body text-center p-2">
+                        <i class="bi bi-cloud-arrow-down-fill display-4 mb-1"></i>
+                        <h6 class="card-title mb-1">Actifs numériques</h6>
+                        <p class="h4 mb-0">{{ $nombreActifsNumeriques }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-4">
+            <a href="{{ route('actifs-numeriques.index') }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 rounded-3 text-white stat-card" style="background-color: #d32f2f;">
+                    <div class="card-body text-center p-2">
+                        <i class="bi bi-clock-history display-4 mb-1"></i>
+                        <h6 class="card-title mb-1">Expirés</h6>
+                        <p class="h4 mb-0">{{ $actifsExpirés }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-6 col-md-4">
+            <a href="{{ route('actifs-numeriques.index') }}" class="text-decoration-none">
+                <div class="card shadow-sm border-0 rounded-3 text-dark stat-card" style="background-color: #ffca28;">
+                    <div class="card-body text-center p-2">
+                        <i class="bi bi-hourglass-split display-4 mb-1"></i>
+                        <h6 class="card-title mb-1">Expire bientôt</h6>
+                        <p class="h4 mb-0">{{ $actifsBientotExpirés }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    {{-- ====== Row 3 : Graphiques ====== --}}
+    <div class="row g-3 mt-3">
+
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-3 p-2">
+                <h6 class="card-title text-center mb-2">Interventions par mois</h6>
+                <canvas id="interventionsChart" height="120"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm rounded-3 p-2">
+                <h6 class="card-title text-center mb-2">Répartition des actifs numériques</h6>
+                <canvas id="actifsChart" height="120"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    {{-- ====== Row 4 : Tableaux ====== --}}
+    <div class="mt-4">
+
+        <h6 class="text-success fw-bold mb-2">Interventions par technicien</h6>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-success">
+                    <tr>
+                        <th>Technicien</th>
+                        <th>Nombre d'interventions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($interventionsParTechnicien as $tech)
+                        <tr>
+                            <td>{{ $tech->name }}</td>
+                            <td>{{ $tech->interventions_count }}</td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="2" class="text-center">Aucun technicien trouvé.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <h6 class="text-success fw-bold mt-4 mb-2">Top 5 équipements les plus souvent en panne</h6>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-danger">
+                    <tr>
+                        <th>Équipement</th>
+                        <th>Nombre de pannes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($equipementsPannes as $equip)
+                        <tr>
+                            <td>{{ $equip->nom }}</td>
+                            <td>{{ $equip->panne_count }}</td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="2" class="text-center">Aucun équipement trouvé.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
 </div>
 
-{{-- Styles personnalisés --}}
+{{-- Styles cartes --}}
 <style>
     .stat-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
         cursor: pointer;
     }
     .stat-card:hover, .stat-card:focus-visible {
-        transform: translateY(-10px) scale(1.03);
-        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.3);
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
         outline: none;
     }
     .stat-card i {
-        transition: transform 0.3s ease;
+        transition: transform 0.2s ease;
     }
     .stat-card:hover i {
-        transform: scale(1.15) rotate(10deg);
+        transform: scale(1.1) rotate(8deg);
     }
 </style>
 
-{{-- Librairie Chart.js --}}
+{{-- Scripts Chart.js --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const ctx = document.getElementById('interventionsChart').getContext('2d');
-
-    // Données dynamiques venant du backend Laravel
-    const labels = {!! json_encode($mois ?? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']) !!};
-    const dataValues = {!! json_encode($interventionsParMois ?? [10, 15, 12, 18, 20, 22]) !!};
-
-    // Configuration graphique
-    const config = {
+    // Interventions par mois
+    const ctx1 = document.getElementById('interventionsChart').getContext('2d');
+    new Chart(ctx1, {
         type: 'line',
         data: {
-            labels: labels,
+            labels: @json($mois),
             datasets: [{
                 label: 'Interventions',
-                data: dataValues,
+                data: @json($interventionsParMois),
                 borderColor: '#004d40',
-                backgroundColor: 'rgba(75, 192, 192, 0.3)',
+                backgroundColor: 'rgba(0, 77, 64, 0.2)',
                 fill: true,
-                tension: 0.35,
-                pointRadius: 6,
-                pointHoverRadius: 9,
-                borderWidth: 4,
-                hoverBorderWidth: 5,
-                hoverBackgroundColor: '#00796b66',
+                tension: 0.3,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                borderWidth: 3,
             }]
         },
         options: {
             responsive: true,
             plugins: {
-                legend: { display: true, position: 'top', labels: { font: { size: 14, weight: 'bold' } } },
+                legend: { position: 'top', labels: { font: { size: 12, weight: 'bold' } } },
                 tooltip: { enabled: true, mode: 'nearest', intersect: false }
             },
             scales: {
@@ -135,10 +224,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 x: { grid: { color: '#f5f5f5' } }
             }
         }
-    };
+    });
 
-    // Création du graphique
-    new Chart(ctx, config);
+    // Répartition actifs numériques
+    const ctx2 = document.getElementById('actifsChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'pie',
+        data: {
+            labels: @json($repartitionActifs->pluck('type')),
+            datasets: [{
+                data: @json($repartitionActifs->pluck('total')),
+                backgroundColor: ['#004d40','#6BA539','#ffca28','#d32f2f','#6f42c1']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom', labels: { font: { size: 12 } } },
+                tooltip: { enabled: true }
+            }
+        }
+    });
 });
 </script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 @endsection

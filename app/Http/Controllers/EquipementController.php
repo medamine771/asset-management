@@ -102,4 +102,27 @@ class EquipementController extends Controller
 
         return view('equipements.panne', ['equipementsEnPanne' => $equipementsPanne]);
     }
+
+    public function historique(Equipement $equipement)
+    {
+        $interventions = $equipement->interventions()
+            ->orderByDesc('date_intervention')
+            ->get();
+    
+        // ⚠️ Bien passer 'equipement' à la vue
+        return view('equipements.historique', compact('equipement', 'interventions'));
+    }
+    public function updateEtat(Request $request, Equipement $equipement)
+{
+    $request->validate([
+        'etat' => 'required|in:bon,en panne,maintenance',
+    ]);
+
+    $equipement->etat = $request->etat;
+    $equipement->save();
+
+    return redirect()->back()->with('success', 'État de l’équipement mis à jour avec succès !');
+}
+
+
 }

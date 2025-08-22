@@ -33,6 +33,7 @@ class Equipement extends Model
     {
         return $this->hasMany(Intervention::class);
     }
+    
 
     public function technicien()
     {
